@@ -98,8 +98,6 @@
 
 //INICIALIZO EL JUEGO
 
-let tabla = [];
-
 const encabezado = document.getElementById("coloHeader");
 encabezado.style.backgroundColor = "lightblue";
 
@@ -109,18 +107,20 @@ titulo.style.color = "black";
 //inicializar acciones
 
 let player = "X";
+let tabla = [];
+let estadoJuego = "jugando";
 
 // selecciono los elementos
 const squares = document.querySelectorAll(".squares");
 
 const resetButton = document.getElementById("resetButton");
-resetButton.addEventListener("click", () => console.log("funca"));
+resetButton.addEventListener("click", () => reset());
+
+const resultado = document.getElementById("result");
 
 // const resetButton = document
 //   .getElementById("resetButton")
 //   .addEventListener("click", () => console.log("funca")); //de esta forma puedo seleccionar al elemento y a la vez llamarlo con un evento (en este caso un addEventListener) y lo hago a todo en una sola linea!
-
-resetButton.addEventListener("click", () => reset());
 
 squares.forEach((square, i) =>
   square.addEventListener("click", () => play(square, i))
@@ -129,10 +129,62 @@ squares.forEach((square, i) =>
 //FUNCIONES
 
 const play = (s, i) => {
-  if (s.innerHTML === "") {
+  if (s.innerHTML === "" && estadoJuego === "jugando") {
     s.innerHTML = player;
+
     tabla[i] = player;
-    console.log(tabla);
+
+    if (tabla[0] === tabla[1] && tabla[1] === tabla[2] && tabla[0]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+
+    if (tabla[3] === tabla[4] && tabla[4] === tabla[5] && tabla[3]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+
+    if (tabla[6] === tabla[7] && tabla[7] === tabla[8] && tabla[6]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+
+    if (tabla[0] === tabla[3] && tabla[3] === tabla[6] && tabla[0]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+
+    if (tabla[1] === tabla[4] && tabla[4] === tabla[7] && tabla[1]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+
+    if (tabla[2] === tabla[5] && tabla[5] === tabla[8] && tabla[2]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+
+    if (tabla[0] === tabla[4] && tabla[4] === tabla[8] && tabla[0]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+    if (tabla[2] === tabla[4] && tabla[4] === tabla[6] && tabla[2]) {
+      resultado.innerText = `El ganador es + ${player}`;
+      estadoJuego = "ganador";
+    }
+
+    let emptySquare = 0;
+    for (let i = 0; i < squares.length; i++) {
+      const square = squares[i];
+      if (square.innerText === "") {
+        emptySquare++;
+      }
+    }
+    if (emptySquare === 0 && estadoJuego === "jugando") {
+      estadoJuego = "EMPATE";
+      resultado.innerHTML = `<h1> Hay un empate!</h1>`;
+    }
+
     if (player === "X") {
       player = "O";
     } else {
@@ -144,6 +196,21 @@ const play = (s, i) => {
 const reset = () => {
   squares.forEach((square) => (square.innerHTML = ""));
   player = "X";
+  tabla = [];
+  resultado.innerText = "";
+  estadoJuego = "jugando";
 };
 
 //REINICIO
+
+//COMBOS GANADORES
+// 0, 1, 2
+// 3, 4, 5
+// 6, 7, 8
+// 0, 3, 6
+// 1, 4, 7
+// 2, 5, 8
+// 0, 4, 8
+// 2, 4, 6
+
+// LOGICA PARA DAR GANADORES
